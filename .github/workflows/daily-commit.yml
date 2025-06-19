@@ -23,4 +23,10 @@ jobs:
           echo "Last run: $(date -u)" > last-updated.txt
           git add last-updated.txt
           git commit -m "Daily update: $(date -u '+%Y-%m-%d')" || echo "No changes to commit"
+
+      - name: Push changes
+        env:
+          PAT: ${{ secrets.PAT }}
+        run: |
+          git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}
           git push
