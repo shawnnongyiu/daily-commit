@@ -1,9 +1,12 @@
-name: Daily Python Line Commit
+name: Daily Python Code Commit
 
 on:
   schedule:
     - cron: '0 0 * * *'  # Runs daily at midnight UTC
   workflow_dispatch:  # Allows manual triggering
+
+permissions:
+  contents: write  # Allows pushing commits
 
 jobs:
   add-line:
@@ -18,13 +21,13 @@ jobs:
           git config user.name "Shawnn Ongyiu"
           git config user.email "shawnnongyiu@gmail.com"
 
-      - name: Append a line to main.py
+      - name: Overwrite main.py
         run: |
-          echo "# Line added on $(date -u)" >> main.py
-          echo "print('This is a line from $(date -u)')" >> main.py
+          echo "# Generated on $(date -u)" > main.py
+          echo "print('This file was generated on $(date -u)')" >> main.py
 
       - name: Commit and push changes
         run: |
           git add main.py
-          git commit -m "Add line on $(date -u)" || echo "No changes to commit"
+          git commit -m "Overwrite file on $(date -u)" || echo "No changes to commit"
           git push
